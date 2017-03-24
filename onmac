@@ -1,44 +1,56 @@
 #!/bin/bash
 
-#param 1:subnet
+# Param 1:subnet
 
-#default ARG1 if not specified
+# Default ARG1 if not specified
 ARG1=${1:-192.168.0.0/24}
 
-confdir=/etc/onmac
+# Config directory
+confdir="/etc/onmac"
 
-#scan network with params
-noutput=$(nmap -sP $ARG1 | tr '\n' ' ' | cut -c 2-)
+# Scan network with params
+noutput="$(nmap -sP $ARG1 | tr '\n' ' ' | cut -c 2-)"
 
-#get ip and mac from output
-iplist=$(echo $noutput | grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}')
-maclist=$(echo $noutput | grep -E -o '[[:xdigit:]]{2}(:[[:xdigit:]]{2}){5}')
-knownlist=$(cat $confdir/knownmacs.conf)
+# Get ip and mac from output and list of known macs from config
+iplist="$(echo "${noutput}" | grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}')"
+maclist="$(echo "${noutput}" | grep -E -o '[[:xdigit:]]{2}(:[[:xdigit:]]{2}){5}')"
+knownlist="$(cat "${confdir}"/knownmacs.conf)"
 
-#Turn lists into arrays
-macarray=( $maclist )
-iparray=( $iplist )
-knownarray=( $knownlist )
+# Turn lists into arrays
+macarray=( ${maclist} )
+iparray=( ${iplist} )
+knownarray=( ${knownlist} )
 
 
-#matching
-unknowncount=0 #var that will store how many unmatched mac addresses have been found
-unknown=() #unknow devices array
-for i in "${!macarray[@]}" #loop through macs
-do
-	#match know macs
-	current=$(echo ${knownarray[i]} | tr "," "\n")
-	arr=( $current ) #to array   #####PUT THIS IN A SECOND LOOP, for each mac found, check if it matches a mac from knownarray[@]...
-	echo ${arr[0]} #mac
-	echo ${arr[1]} #name
-	####DEV####
+# Matching
+unknowncount=0 # Var that will store how many unmatched mac addresses have been found
+unknown=() # Unknown devices array
 
-	#mac not found = add to unknown count and add its data to array
-	(( unknowncount++ ))
-	unknown+=('ip: '${iparray[i]}' mac: '${macarray[i]})
+for i in "${!macarray[@]}"; do # Loop through macs
+  notfound=0 # Reset notfound counter before each loop
+
+  for j in "${!knownarray[@]}"; do # Loop through known addresses
+    current="$(echo "${knownarray[j]}" | tr "," "\n")" # Current address
+    arr=( ${current} ) # Transform current address into array where [0] = mac and [1] = name
+
+    if [ "${arr[0]}" == "${macarray[i]}" ]; then # Match the strings together
+      echo "${arr[1]}" # Echo name
+      echo 'MAC: '"${macarray[i]}"' IP: '"${iparray[i]}" # Echo MAC and IP
+      echo '' # Newline for prettiness
+    else
+      (( notfound++ )) # Increase notfound counter
+    fi
+
+  done
+
+  if [ "${notfound}" == "${#knownarray[@]}" ]; then # Notfound equal to known addresses (aka hasn't been matched)
+    (( unknowncount++ )) # Increase counter for output
+    unknown+=('ip: '"${iparray[i]}"' mac: '"${macarray[i]}") # Add data to output array
+  fi
 done
-echo "$unknowncount unknown devices are online." #output unknown count
-for i in "${!unknown[@]}" #loop through unknowns
-do
-	echo "${unknown[i]}"
+
+echo ""${unknowncount}" unknown devices are online." # Output unknown count
+
+for i in "${!unknown[@]}"; do # Loop through unknowns
+  echo "${unknown[i]}" # Output each unknown
 done
