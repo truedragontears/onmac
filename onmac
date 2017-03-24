@@ -22,61 +22,8 @@ do
 	case "${macarray[i]}" in
 
 		#match know macs
-		64:BC:0C:2C:7C:9D)
-			echo "kjell-android"
-			echo "(ip: ${iparray[i]} mac: ${macarray[i]})" #output if matched
-			echo ""
-		;;
-		98:4B:E1:44:07:5B)
-			echo "printer-upstairs"
-			echo "(ip: ${iparray[i]} mac: ${macarray[i]})"
-			echo ""
-		;;
-		E0:B9:E5:6F:B6:56)
-			echo "B-Box"
-			echo "(ip: ${iparray[i]} mac: ${macarray[i]})"
-			echo ""
-		;;
-		C4:6E:1F:4F:ED:62)
-			echo "Archer-C7"
-			echo "(ip: ${iparray[i]} mac: ${macarray[i]})"
-			echo ""
-		;;
-		BC:5F:F4:DC:13:75)
-                        echo "kjell-desktop"
-                        echo "(ip: ${iparray[i]} mac: ${macarray[i]})"
-                        echo ""
-		;;
-		40:49:0F:6F:B3:41)
-                        echo "kjell-wintop"
-                        echo "(ip: ${iparray[i]} mac: ${macarray[i]})"
-                        echo ""
-		;;
-		BC:AE:C5:0F:DD:5C)
-                        echo "kjell-mineserver"
-                        echo "(ip: ${iparray[i]} mac: ${macarray[i]})"
-                        echo ""
-		;;
-		00:19:D2:85:D5:B0)
-                        echo "kjell-archtop"
-                        echo "(ip: ${iparray[i]} mac: ${macarray[i]})"
-                        echo ""
-		;;
-		94:57:A5:7A:DD:C7)
-                        echo "printer-downstairs"
-                        echo "(ip: ${iparray[i]} mac: ${macarray[i]})"
-                        echo ""
-		;;
-		44:6D:57:FB:D3:CE)
-                        echo "eva-laptop"
-                        echo "(ip: ${iparray[i]} mac: ${macarray[i]})"
-                        echo ""
-		;;
-		40:8D:5C:1B:D5:31)
-                        echo "eric-desktop"
-                        echo "(ip: ${iparray[i]} mac: ${macarray[i]})"
-                        echo ""
-		;;
+		
+		####DEV####
 
 		#mac not found = add to unknown count and add its data to array
 		*)
