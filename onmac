@@ -1,36 +1,41 @@
 #!/bin/bash
 
-
 #param 1:subnet
 
+#default ARG1 if not specified
+ARG1=${1:-192.168.0.0/24}
+
+confdir=/etc/onmac
+
 #scan network with params
-noutput=$(nmap -sP $1 | tr '\n' ' ' | cut -c 2-)
+noutput=$(nmap -sP $ARG1 | tr '\n' ' ' | cut -c 2-)
 
 #get ip and mac from output
 iplist=$(echo $noutput | grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}')
 maclist=$(echo $noutput | grep -E -o '[[:xdigit:]]{2}(:[[:xdigit:]]{2}){5}')
+knownlist=$(cat $confdir/knownmacs.conf)
 
 #Turn lists into arrays
 macarray=( $maclist )
 iparray=( $iplist )
+knownarray=( $knownlist )
+
 
 #matching
 unknowncount=0 #var that will store how many unmatched mac addresses have been found
 unknown=() #unknow devices array
 for i in "${!macarray[@]}" #loop through macs
 do
-	case "${macarray[i]}" in
+	#match know macs
+	current=$(echo ${knownarray[i]} | tr "," "\n")
+	arr=( $current ) #to array   #####PUT THIS IN A SECOND LOOP, for each mac found, check if it matches a mac from knownarray[@]...
+	echo ${arr[0]} #mac
+	echo ${arr[1]} #name
+	####DEV####
 
-		#match know macs
-		
-		####DEV####
-
-		#mac not found = add to unknown count and add its data to array
-		*)
-			(( unknowncount++ ))
-			unknown+=('ip: '${iparray[i]}' mac: '${macarray[i]})
-		;;
-	esac
+	#mac not found = add to unknown count and add its data to array
+	(( unknowncount++ ))
+	unknown+=('ip: '${iparray[i]}' mac: '${macarray[i]})
 done
 echo "$unknowncount unknown devices are online." #output unknown count
 for i in "${!unknown[@]}" #loop through unknowns
