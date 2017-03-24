@@ -5,5 +5,4 @@ A command that lets you see who's on your network. Simply add descriptions for k
 
 ## Dependencies
 
-* nmap
-#apt install -y nmap;
+* nmap `#apt install -y nmap;`
