@@ -45,8 +45,8 @@ for i in "${!macarray[@]}"; do # Loop through macs
     arr=( ${current} ) # Transform current address into array where [0] = mac and [1] = name
 
     if [ "${arr[0]}" == "${macarray[i]}" ]; then # Match the strings together
-      printf "${arr[1]}\n" # Print name
-      printf 'MAC: '"${macarray[i]}"' IP: '"${iparray[i]}\n\n" # Print MAC and IP
+      printf '('"${arr[1]}"')'"\n" # Print name
+      printf 'MAC: '"${macarray[i]}"' IP: '"${iparray[i]}\n" # Print MAC and IP
     else
       (( notfound++ )) # Increase notfound counter
     fi
@@ -59,7 +59,7 @@ for i in "${!macarray[@]}"; do # Loop through macs
   fi
 done
 
-printf ""${unknowncount}" unknown devices are online.\n" # Output unknown count
+printf ""${unknowncount}" unknown devices are online:\n" # Output unknown count
 
 for i in "${!unknown[@]}"; do # Loop through unknowns
   printf "${unknown[i]}\n" # Output each unknown
