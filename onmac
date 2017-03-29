@@ -55,7 +55,7 @@ for i in "${!macarray[@]}"; do # Loop through macs
 
   if [ "${notfound}" == "${#knownarray[@]}" ]; then # Notfound equal to known addresses (aka hasn't been matched)
     (( unknowncount++ )) # Increase counter for output
-    unknown+=('ip: '"${iparray[i]}"' mac: '"${macarray[i]}") # Add data to output array
+    unknown+=('MAC: '"${macarray[i]}"' IP: '"${iparray[i]}") # Add data to output array
   fi
 done
 
