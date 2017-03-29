@@ -9,9 +9,9 @@ A command that lets you see who's on your network. Simply add descriptions for k
 
 ## Installation
 
-1. Clone repository: `$git clone https://github.com/truedragontears/onmac.git`
-2: cd into folder onmac: `$cd onmac`
-3: Run install: `#./install`
+1  Clone repository: `$git clone https://github.com/truedragontears/onmac.git`
+2  cd into folder onmac: `$cd onmac`
+3  Run install: `#./install`
 
 ## Usage
 
