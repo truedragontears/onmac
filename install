@@ -22,3 +22,4 @@ printf "Copying onmac to /usr/local/bin/onmac\n"
 cp ./onmac /usr/local/bin/onmac
 
 printf "${GREEN}Done.${NC}\n"
+printf "Edit /etc/onmac/knownmacs.conf to configure your mac list\n"
