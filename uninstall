@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+# Check for root
+if (( $EUID != 0 )); then
+  printf "${RED}Please run as root/sudo${NC}\n"
+  exit
+fi
+
+# Uninstall
+function uninstall {
+  printf "Uninstall started...\n"
+  printf "Removing config...\n"
+  rm -r /etc/onmac
+  printf "Removing program...\n"
+  rm /usr/local/bin/onmac
+  printf "${GREEN}Done.${NC}\n"
+}
+
+# Confirmation
+read -r -p "Are you sure you want to completely remove onmac? [y/N] " response
+case "$response" in
+  [yY][eE][sS]|[yY]) # Yes
+    uninstall
+    exit
+  ;;
+  *) # No
+    printf "${RED}Cancelled${NC}\n"
+    exit
+  ;;
+esac

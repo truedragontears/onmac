@@ -2,6 +2,17 @@
 
 # Param 1:subnet
 
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+# Check for root
+if (( $EUID != 0 )); then
+  printf "${RED}Please run as root/sudo${NC}\n"
+  exit
+fi
+
 # Default ARG1 if not specified
 ARG1=${1:-192.168.0.0/24}
 
